@@ -1,0 +1,10 @@
+apiVersion: github.com/v1alpha1
+kind: ConsumerGroup
+metadata:
+  labels:
+    app.kubernetes.io/name: konsumer-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: consumergroup-sample
+spec:
+  groupId: test.001
+  topic: test.topic.v1
