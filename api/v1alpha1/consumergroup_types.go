@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,9 +29,14 @@ type ConsumerGroupSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of ConsumerGroup. Edit consumergroup_types.go to remove/update
-	GroupID string `json:"groupId,omitempty"`
-	Topic   string `json:"topic,omitempty"`
+	GroupID         string             `json:"groupId,omitempty"`
+	Topic           string             `json:"topic,omitempty"`
+	Image           string             `json:"image,omitempty"`
+	RefreshInterval string             `json:"refreshInterval,omitempty"`
+	MinReplicas     int32              `json:"minReplicas,omitempty"`
+	MaxReplicas     int32              `json:"maxReplicas,omitempty"`
+	OffsetThreshold int32              `json:"offsetThreshold,omitempty"`
+	Containers      []corev1.Container `json:"containers,omitempty"`
 }
 
 // ConsumerGroupStatus defines the observed state of ConsumerGroup

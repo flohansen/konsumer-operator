@@ -28,7 +28,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	githubcomv1alpha1 "github.com/flohansen/konsumer-operator/api/v1alpha1"
-	"github.com/flohansen/konsumer-operator/internal/monitor"
 )
 
 var _ = Describe("ConsumerGroup Controller", func() {
@@ -70,9 +69,8 @@ var _ = Describe("ConsumerGroup Controller", func() {
 		It("should successfully reconcile the resource", func() {
 			By("Reconciling the created resource")
 			controllerReconciler := &ConsumerGroupReconciler{
-				Client:   k8sClient,
-				Scheme:   k8sClient.Scheme(),
-				Monitors: make(map[string]*monitor.LagMonitor),
+				Client: k8sClient,
+				Scheme: k8sClient.Scheme(),
 			}
 
 			_, err := controllerReconciler.Reconcile(ctx, reconcile.Request{

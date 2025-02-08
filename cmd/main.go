@@ -34,9 +34,9 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	githubcomv1alpha1 "github.com/flohansen/konsumer-operator/api/v1alpha1"
 	"github.com/flohansen/konsumer-operator/internal/controller"
-	"github.com/flohansen/konsumer-operator/internal/monitor"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -123,10 +123,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
+		"bootstrap.servers": ":9092",
+		"group.id":          "",
+	})
+	if err != nil {
+		setupLog.Error(err, "unable to create consumer")
+	}
+
 	if err = (&controller.ConsumerGroupReconciler{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
-		Monitors: make(map[string]*monitor.LagMonitor),
+		Consumer: consumer,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConsumerGroup")
 		os.Exit(1)

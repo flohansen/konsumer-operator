@@ -6,5 +6,14 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
   name: consumergroup-sample
 spec:
-  groupId: test.001
-  topic: test.topic.v1
+  refreshInterval: 30s
+  groupId: test.group.001
+  topic: test.topic
+  minReplicas: 1
+  maxReplicas: 24
+  offsetThreshold: 10000
+  containers:
+    - name: consumer
+      image: ghcr.io/flohansen/waiter
+      args: ["-timeout", "1h"]
+
